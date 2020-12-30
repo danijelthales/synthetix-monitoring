@@ -81,7 +81,7 @@ async function getSynthInfo(synth, results) {
     let leverage = 1;
     let susdKey = await snxjs.sUSD.currencyKey();
     let fee = await snxjs.Exchanger.feeRateForExchange(susdKey, toUtf8Bytes(synth));
-    fee = formatEther(fee) * 100 + '%';
+    fee = formatEther(fee) * 100;
     if (synth.toLowerCase() == 'susd') {
         fee = "N/A"
     }
@@ -98,8 +98,13 @@ async function getSynthInfo(synth, results) {
         leverage = calculatedLeverage.toFixed(2);
     }
     let suggestedFee = leverage * clThreshold;
+    let riskFactor = suggestedFee - fee;
+    riskFactor = riskFactor.toFixed(2);
+    let risky = riskFactor > 0;
+    fee = fee + '%';
     suggestedFee = suggestedFee + '%';
     clThreshold = clThreshold + '%';
+    riskFactor = riskFactor + '%';
 
     console.log(synth + " frozen value is: ", rateIsFrozen);
     results.push({
@@ -112,7 +117,9 @@ async function getSynthInfo(synth, results) {
         leverage,
         fee,
         clThreshold,
-        suggestedFee
+        suggestedFee,
+        riskFactor,
+        risky
     });
 }
 

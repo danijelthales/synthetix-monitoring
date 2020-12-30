@@ -1,28 +1,39 @@
-body { background-color: #fafafa;}table > :not(:last-child) > :last-child > * {
-                                      border-bottom-color: currentColor;
-                                  }
+body {
+    background-color: #fafafa;
+}
+
+table > :not(:last-child) > :last-child > * {
+    border-bottom-color: currentColor;
+}
+
 table > :not(caption) > * > * {
     border-width: 0 1px;
 }
+
 table > :not(caption) > * > * {
     padding: 0.5rem 0.5rem;
     background-color: var(--bs-table-bg);
     background-image: linear-gradient(var(--bs-table-accent-bg), var(--bs-table-accent-bg));
     border-bottom-width: 1px;
 }
+
 table > :not(caption) > * {
     border-width: 1px 0;
 }
+
 table > tbody > tr:nth-of-type(odd) {
     --bs-table-accent-bg: var(--bs-table-striped-bg);
     color: var(--bs-table-striped-color);
 }
+
 table > tbody {
     vertical-align: inherit;
 }
+
 table > thead {
     vertical-align: bottom;
 }
+
 table {
     --bs-table-bg: transparent;
     --bs-table-accent-bg: transparent;
@@ -40,10 +51,25 @@ table {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
 }
-th { cursor: pointer; }
-thead { background-color: #222; color: #fff;}
-.container { margin: 150px auto; max-width: 640px;}
 
-td{
+th {
+    cursor: pointer;
+}
+
+thead {
+    background-color: #222;
+    color: #fff;
+}
+
+.container {
+    margin: 150px auto;
+    max-width: 640px;
+}
+
+td {
     text-align: center;
+}
+
+.risky {
+    color: red;
 }

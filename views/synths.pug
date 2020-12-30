@@ -13,10 +13,11 @@ html
                     th Frozen ↕️
                     th Leverage ↕️
                     th Fee ↕️
-                    th Oracle deviation threshold ↕️
+                    th Oracle Threshold ↕️
                     th Suggested Fee ↕️
+                    th Risk Factor ↕️
             tbody
-                 each s in synths
+                each s in synths
                     tr
                         td= s.synth
                         td= s.totalSupply
@@ -26,4 +27,5 @@ html
                         td= s.fee
                         td= s.clThreshold
                         td= s.suggestedFee
+                        td(class = s.risky ? "risky" : "")= s.riskFactor
 script(src="/table-sort.js")
