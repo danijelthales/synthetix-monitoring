@@ -17,6 +17,10 @@ router.get("/about", (req, res) => {
     res.render("about", {title: "Hey", message: "Hello there!"});
 });
 
+router.get('/table-sort.js', function (req, res) {
+    res.sendFile(path.join(__dirname + '/table-sort.js'));
+});
+
 let results = [];
 router.get("/synths", (req, res) => {
     res.render("synths", {title: "Synths", synths: results});
@@ -43,6 +47,8 @@ const formatEther = snxjs.utils.formatEther;
 const fromBlock = "";
 const blockOptions = fromBlock ? {blockTag: Number(fromBlock)} : {};
 
+const smallDeviationSynths = ["sBTC", "sETH", "sEUR", "sAUD", "sGBP", "sJPY", "sUSD", "sCHF", "sNIKKEI", "sFTSE", "sXAG", "sXAU", "sOIL", "iOIL"]
+
 setTimeout(async () => {
         try {
 
@@ -67,8 +73,9 @@ setTimeout(async () => {
 
 async function getSynthInfo(synth, results) {
     const totalAmount = await snxjs[synth].contract.totalSupply(blockOptions);
-    const totalSupply = formatEther(totalAmount);
-    const rateForSynth = await snxjs.ExchangeRates.contract.rateForCurrency(toUtf8Bytes(synth), blockOptions) / 1e18;
+    const totalSupply = numberWithCommas((formatEther(totalAmount) * 1.0).toFixed(2));
+    let rateForSynth = await snxjs.ExchangeRates.contract.rateForCurrency(toUtf8Bytes(synth), blockOptions) / 1e18;
+    rateForSynth = rateForSynth.toFixed(2)
     const totalSupplyInUSD = rateForSynth * totalSupply;
     const rateIsFrozen = await snxjs.ExchangeRates.contract.rateIsFrozen(toUtf8Bytes(synth), blockOptions);
     let leverage = 1;
@@ -79,18 +86,56 @@ async function getSynthInfo(synth, results) {
         fee = "N/A"
     }
 
+    let clThreshold = 1;
+    if (smallDeviationSynths.includes(synth)) {
+        clThreshold = 0.5;
+    }
     if (synth.startsWith("i")) {
+
         let longSynth = "s" + synth.substring(1, synth.length);
         let rateForLong = await snxjs.ExchangeRates.contract.rateForCurrency(toUtf8Bytes(longSynth), blockOptions) / 1e18;
         let calculatedLeverage = rateForLong / rateForSynth;
         leverage = calculatedLeverage.toFixed(2);
     }
+    let suggestedFee = leverage * clThreshold;
+    suggestedFee = suggestedFee + '%';
+    clThreshold = clThreshold + '%';
 
     console.log(synth + " frozen value is: ", rateIsFrozen);
-    results.push({synth, totalAmount, totalSupply, rateForSynth, totalSupplyInUSD, rateIsFrozen, leverage, fee});
+    results.push({
+        synth,
+        totalAmount,
+        totalSupply,
+        rateForSynth,
+        totalSupplyInUSD,
+        rateIsFrozen,
+        leverage,
+        fee,
+        clThreshold,
+        suggestedFee
+    });
+}
+
+function getNumberLabel(labelValue) {
+
+    // Nine Zeroes for Billions
+    return Math.abs(Number(labelValue)) >= 1.0e+9
+
+        ? Math.round(Math.abs(Number(labelValue)) / 1.0e+9) + "B"
+        // Six Zeroes for Millions
+        : Math.abs(Number(labelValue)) >= 1.0e+6
+
+            ? Math.round(Math.abs(Number(labelValue)) / 1.0e+6) + "M"
+            // Three Zeroes for Thousands
+            : Math.abs(Number(labelValue)) >= 1.0e+3
+
+                ? Math.round(Math.abs(Number(labelValue)) / 1.0e+3) + "K"
+
+                : Math.abs(Number(labelValue));
+
 }
 
 
-
-
-
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
