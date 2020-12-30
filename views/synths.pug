@@ -1,0 +1,20 @@
+html
+    head
+        title= title
+    body
+        table
+            tr
+                th Synth
+                th Total Supply
+                th Price
+                th Frozen
+                th Leverage
+                th Fee
+            each s in synths
+                tr
+                    td= s.synth
+                    td= s.totalSupply
+                    td= s.rateForSynth
+                    td= s.rateIsFrozen
+                    td= s.leverage
+                    td= s.fee
