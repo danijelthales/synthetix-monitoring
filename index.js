@@ -49,7 +49,7 @@ const blockOptions = fromBlock ? {blockTag: Number(fromBlock)} : {};
 
 const smallDeviationSynths = ["sBTC", "sETH", "sEUR", "sAUD", "sGBP", "sJPY", "sUSD", "sCHF", "sNIKKEI", "sFTSE", "sXAG", "sXAU", "sOIL", "iOIL", "iETH", "iBTC"]
 
-setTimeout(async () => {
+setInterval(async () => {
         try {
 
             const synths = snxjs.contractSettings.synths.map(({name}) => name);
@@ -68,7 +68,7 @@ setTimeout(async () => {
         }
     }
     ,
-    0.1 * 60 * process.env.POLL_INTERVAL
+    1000 * 60 * 30
 );
 
 async function getSynthInfo(synth, results) {
