@@ -21,6 +21,10 @@ router.get('/table-sort.js', function (req, res) {
     res.sendFile(path.join(__dirname + '/table-sort.js'));
 });
 
+router.get('/finish.js', function (req, res) {
+    res.sendFile(path.join(__dirname + '/finish.js'));
+});
+
 let results = [];
 router.get("/synths", (req, res) => {
     res.render("synths", {title: "Synths", synths: results});
@@ -123,7 +127,7 @@ async function getSynthInfo(synth, results) {
     let riskFactor = suggestedFee - fee;
     riskFactor = riskFactor.toFixed(2);
     let risky = riskFactor > 0;
-    fee = fee + '%';
+    fee = fee.toFixed(2) + '%';
     suggestedFee = suggestedFee + '%';
     clThreshold = clThreshold + '%';
     riskFactor = riskFactor + '%';
