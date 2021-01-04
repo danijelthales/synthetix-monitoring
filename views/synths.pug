@@ -18,7 +18,7 @@ html
                     th Risk Factor ↕️
             tbody
                 each s in synths
-                    tr
+                    tr(class = s.rateIsFrozen ? "frozen" : "")
                         td= s.synth
                         td= s.totalSupply
                         td= s.rateForSynth

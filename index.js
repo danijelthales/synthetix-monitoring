@@ -10,7 +10,7 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
 router.get("/", (req, res) => {
-    res.render("index");
+    res.render("synths");
 });
 
 router.get("/about", (req, res) => {
