@@ -71,6 +71,28 @@ setInterval(async () => {
     1000 * 60 * 5
 );
 
+setTimeout(async () => {
+        try {
+
+            const synths = snxjs.contractSettings.synths.map(({name}) => name);
+
+
+            let totalInUSD = 0;
+            let totalInUSDAboveTwoPercent = 0;
+            results = [];
+            for (let synth in synths) {
+                console.log("getting synth: " + synths[synth]);
+                await getSynthInfo(synths[synth], results);
+            }
+            console.log(results);
+        } catch (e) {
+            console.log("Error in periodic rebalancing check ", e);
+        }
+    }
+    ,
+    1000 * 30
+);
+
 async function getSynthInfo(synth, results) {
     const totalAmount = await snxjs[synth].contract.totalSupply(blockOptions);
     const totalSupply = numberWithCommas((formatEther(totalAmount) * 1.0).toFixed(2));
