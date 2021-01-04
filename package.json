@@ -21,6 +21,6 @@
     "prom-client": "^12.0.0",
     "pug": "^3.0.0",
     "synthetix-data": "^2.1.39",
-    "synthetix-js": "^2.32.2"
+    "synthetix-js": "^2.35.4"
   }
 }

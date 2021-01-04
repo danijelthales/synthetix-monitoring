@@ -68,7 +68,7 @@ setInterval(async () => {
         }
     }
     ,
-    1000 * 60 * 30
+    1000 * 60 * 5
 );
 
 async function getSynthInfo(synth, results) {
