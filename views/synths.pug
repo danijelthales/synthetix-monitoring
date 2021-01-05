@@ -14,6 +14,7 @@ html
                 tr
                     th Synth
                     th Total Supply
+                    th Total Supply in sUSD
                     th Price
                     th Frozen
                     th Leverage
@@ -26,6 +27,7 @@ html
                     tr(class = s.rateIsFrozen ? "frozen" : "")
                         td= s.synth
                         td= s.totalSupply
+                        td= s.totalSupplyInUSD
                         td= s.rateForSynth
                         td= s.rateIsFrozen
                         td= s.leverage
