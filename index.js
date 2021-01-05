@@ -100,10 +100,14 @@ setTimeout(async () => {
 
 async function getSynthInfo(synth, resultsMap) {
     const totalAmount = await snxjs[synth].contract.totalSupply(blockOptions);
-    const totalSupply = numberWithCommas((formatEther(totalAmount) * 1.0).toFixed(2));
+    let totalSupply = (formatEther(totalAmount) * 1.0).toFixed(2);
     let rateForSynth = await snxjs.ExchangeRates.contract.rateForCurrency(toUtf8Bytes(synth), blockOptions) / 1e18;
+    const totalSupplyCalc = formatEther(totalAmount);
+    const rateForSynthCalc = await snxjs.ExchangeRates.contract.rateForCurrency(toUtf8Bytes(synth), blockOptions) / 1e18;
+    let totalSupplyInUSD = rateForSynthCalc * totalSupplyCalc;
+    totalSupplyInUSD = numberWithCommas(totalSupplyInUSD.toFixed(0));
     rateForSynth = rateForSynth.toFixed(2)
-    const totalSupplyInUSD = numberWithCommas(rateForSynth * (formatEther(totalAmount) * 1.0).toFixed(2));
+    totalSupply = numberWithCommas(totalSupply);
     const rateIsFrozen = await snxjs.ExchangeRates.contract.rateIsFrozen(toUtf8Bytes(synth), blockOptions);
     let leverage = 1;
     let susdKey = await snxjs.sUSD.currencyKey();
