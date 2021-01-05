@@ -10,7 +10,7 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
 router.get("/", (req, res) => {
-    res.render("synths", {title: "Synths", synths: results});
+    res.render("synths", {title: "Synths", synths: resultsMap.values()});
 });
 
 router.get("/about", (req, res) => {
@@ -25,6 +25,7 @@ router.get('/finish.js', function (req, res) {
     res.sendFile(path.join(__dirname + '/finish.js'));
 });
 
+let resultsMap = new Map();
 let results = [];
 router.get("/synths", (req, res) => {
     res.render("synths", {title: "Synths", synths: results});
@@ -61,10 +62,10 @@ setInterval(async () => {
 
             let totalInUSD = 0;
             let totalInUSDAboveTwoPercent = 0;
-            results = [];
             for (let synth in synths) {
                 console.log("getting synth: " + synths[synth]);
-                await getSynthInfo(synths[synth], results);
+                await getSynthInfo(synths[synth], resultsMap);
+                results = Array.from(resultsMap.values());
             }
             console.log(results);
         } catch (e) {
@@ -83,10 +84,10 @@ setTimeout(async () => {
 
             let totalInUSD = 0;
             let totalInUSDAboveTwoPercent = 0;
-            results = [];
             for (let synth in synths) {
                 console.log("getting synth: " + synths[synth]);
-                await getSynthInfo(synths[synth], results);
+                await getSynthInfo(synths[synth], resultsMap);
+                results = Array.from(resultsMap.values());
             }
             console.log(results);
         } catch (e) {
@@ -97,7 +98,7 @@ setTimeout(async () => {
     1000 * 30
 );
 
-async function getSynthInfo(synth, results) {
+async function getSynthInfo(synth, resultsMap) {
     const totalAmount = await snxjs[synth].contract.totalSupply(blockOptions);
     const totalSupply = numberWithCommas((formatEther(totalAmount) * 1.0).toFixed(2));
     let rateForSynth = await snxjs.ExchangeRates.contract.rateForCurrency(toUtf8Bytes(synth), blockOptions) / 1e18;
@@ -127,13 +128,13 @@ async function getSynthInfo(synth, results) {
     let riskFactor = suggestedFee - fee;
     riskFactor = riskFactor.toFixed(2);
     let risky = riskFactor > 0;
-    fee = fee.toFixed(2) + '%';
+    fee = (fee * 1.0).toFixed(2) + '%';
     suggestedFee = suggestedFee + '%';
     clThreshold = clThreshold + '%';
     riskFactor = riskFactor + '%';
 
     console.log(synth + " frozen value is: ", rateIsFrozen);
-    results.push({
+    resultsMap.set(synth, {
         synth,
         totalAmount,
         totalSupply,
