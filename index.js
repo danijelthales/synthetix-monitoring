@@ -51,6 +51,7 @@ const toUtf8Bytes = SynthetixJs.SynthetixJs.utils.formatBytes32String;
 const formatEther = snxjs.utils.formatEther;
 const fromBlock = "";
 const blockOptions = fromBlock ? {blockTag: Number(fromBlock)} : {};
+let totalInUSD = 0;
 
 const smallDeviationSynths = ["sBTC", "sETH", "sEUR", "sAUD", "sGBP", "sJPY", "sUSD", "sCHF", "sNIKKEI", "sFTSE", "sXAG", "sXAU", "sOIL", "iOIL", "iETH", "iBTC"]
 
@@ -59,14 +60,23 @@ setInterval(async () => {
 
             const synths = snxjs.contractSettings.synths.map(({name}) => name);
 
-
-            let totalInUSD = 0;
-            let totalInUSDAboveTwoPercent = 0;
             for (let synth in synths) {
                 console.log("getting synth: " + synths[synth]);
                 await getSynthInfo(synths[synth], resultsMap);
                 results = Array.from(resultsMap.values());
             }
+            totalInUSD = 0;
+            results.forEach(r => {
+                totalInUSD += r.totalSupplyInUSDPure;
+            });
+            resultsMap.forEach((value, key) => {
+                if (value.synthPercentage == "0") {
+                    value.synthPercentage = value.totalSupplyInUSDPure * 100 / totalInUSD;
+                    value.synthPercentage = value.synthPercentage.toFixed(2) + "%";
+                    resultsMap.set(key, value);
+                }
+            });
+            results = Array.from(resultsMap.values());
             console.log(results);
         } catch (e) {
             console.log("Error in periodic rebalancing check ", e);
@@ -105,6 +115,7 @@ async function getSynthInfo(synth, resultsMap) {
     const totalSupplyCalc = formatEther(totalAmount);
     const rateForSynthCalc = await snxjs.ExchangeRates.contract.rateForCurrency(toUtf8Bytes(synth), blockOptions) / 1e18;
     let totalSupplyInUSD = rateForSynthCalc * totalSupplyCalc;
+    let totalSupplyInUSDPure = totalSupplyInUSD;
     totalSupplyInUSD = numberWithCommas(totalSupplyInUSD.toFixed(0));
     rateForSynth = rateForSynth.toFixed(2)
     totalSupply = numberWithCommas(totalSupply);
@@ -137,6 +148,12 @@ async function getSynthInfo(synth, resultsMap) {
     clThreshold = clThreshold + '%';
     riskFactor = riskFactor + '%';
 
+    let synthPercentage = 0;
+    if (totalInUSD > 0) {
+        synthPercentage = totalSupplyInUSDPure * 100 / totalInUSD;
+        synthPercentage = synthPercentage.toFixed(2) + "%";
+    }
+
     console.log(synth + " frozen value is: ", rateIsFrozen);
     resultsMap.set(synth, {
         synth,
@@ -144,6 +161,8 @@ async function getSynthInfo(synth, resultsMap) {
         totalSupply,
         rateForSynth,
         totalSupplyInUSD,
+        totalSupplyInUSDPure,
+        synthPercentage,
         rateIsFrozen,
         leverage,
         fee,
