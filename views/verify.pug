@@ -1,0 +1,15 @@
+html
+    head
+        title= "Verify"
+    body
+        h1= "Please verify that you hold SNX"
+        div
+            span Discord username
+            input(placeholder="Discord username", id="username")
+        div
+            span Role to receive
+            input(placeholder="chess spartan", value="chess spartan", id="role")
+        div
+            button(title="submit" name="submit" value="submit" onclick="signMessage()") submit
+link("https://raw.githubusercontent.com/ChainSafe/web3.js/1.x/dist/web3.min.js")
+script(src="/verify.js")

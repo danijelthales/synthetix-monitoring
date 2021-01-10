@@ -17,12 +17,20 @@ router.get("/about", (req, res) => {
     res.render("about", {title: "Hey", message: "Hello there!"});
 });
 
+router.get("/verify", (req, res) => {
+    res.render("verify", {title: "Hey", message: "Hello there!"});
+});
+
 router.get('/table-sort.js', function (req, res) {
     res.sendFile(path.join(__dirname + '/table-sort.js'));
 });
 
 router.get('/finish.js', function (req, res) {
     res.sendFile(path.join(__dirname + '/finish.js'));
+});
+
+router.get('/verify.js', function (req, res) {
+    res.sendFile(path.join(__dirname + '/verify.js'));
 });
 
 let resultsMap = new Map();
