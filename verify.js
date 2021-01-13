@@ -1,5 +1,14 @@
-if (web3) {
-    ethereum.enable();
+const ethEnabled = () => {
+    if (window.ethereum) {
+        window.web3 = new Web3(window.ethereum);
+        window.ethereum.enable();
+        return true;
+    }
+    return false;
+}
+
+if (!ethEnabled()) {
+    alert("Please install an Ethereum-compatible browser or extension like MetaMask to use this dApp!");
 }
 
 function signMessage() {
@@ -8,8 +17,8 @@ function signMessage() {
     var discordName = document.getElementById("username").value;
     var message = discordName + " will be assigned role " + role;
     console.log("Message to sign:" + message);
-    web3.personal.sign(message, web3.eth.coinbase, function (test, signature) {
-        verifyMessage(message, role, discordName, signature, web3.eth.coinbase)
+    window.web3.personal.sign(message, window.web3.eth.coinbase, function (test, signature) {
+        verifyMessage(message, role, discordName, signature, window.web3.eth.coinbase)
     });
 }
 
