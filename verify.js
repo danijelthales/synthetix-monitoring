@@ -28,3 +28,11 @@ function verifyMessage(message, role, username, signature, address) {
         value: sentValue
     }));
 }
+
+setTimeout(function () {
+    document.getElementById("address").innerHTML = "Connected as " + web3.eth.coinbase;
+}, 1000 * 1);
+
+setInterval(function () {
+    document.getElementById("address").innerHTML = "Connected as " + web3.eth.coinbase;
+}, 1000 * 10);
