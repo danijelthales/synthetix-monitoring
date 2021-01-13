@@ -33,6 +33,10 @@ router.get('/verify.js', function (req, res) {
     res.sendFile(path.join(__dirname + '/verify.js'));
 });
 
+router.get('/web3.min.js', function (req, res) {
+    res.sendFile(path.join(__dirname + '/web3.min.js'));
+});
+
 let resultsMap = new Map();
 let results = [];
 router.get("/synths", (req, res) => {

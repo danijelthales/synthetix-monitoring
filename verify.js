@@ -17,8 +17,8 @@ function signMessage() {
     var discordName = document.getElementById("username").value;
     var message = discordName + " will be assigned role " + role;
     console.log("Message to sign:" + message);
-    window.web3.personal.sign(message, window.web3.eth.coinbase, function (test, signature) {
-        verifyMessage(message, role, discordName, signature, window.web3.eth.coinbase)
+    window.web3.eth.personal.sign(message, web3.currentProvider.selectedAddress, function (test, signature) {
+        verifyMessage(message, role, discordName, signature, web3.currentProvider.selectedAddress)
     });
 }
 
@@ -41,9 +41,9 @@ function verifyMessage(message, role, username, signature, address) {
 }
 
 setTimeout(function () {
-    document.getElementById("address").innerHTML = "Connected as " + web3.eth.coinbase;
+    document.getElementById("address").innerHTML = "Connected as " + web3.currentProvider.selectedAddress;
 }, 1000 * 1);
 
 setInterval(function () {
-    document.getElementById("address").innerHTML = "Connected as " + web3.eth.coinbase;
+    document.getElementById("address").innerHTML = "Connected as " + web3.currentProvider.selectedAddress;
 }, 1000 * 10);
