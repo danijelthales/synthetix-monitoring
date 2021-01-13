@@ -2,10 +2,12 @@ if (web3) {
     ethereum.enable();
 }
 
-async function signMessage() {
+function signMessage() {
+    console.log("Prompted signMessage");
     var role = document.getElementById("role").value;
     var discordName = document.getElementById("username").value;
     var message = discordName + " will be assigned role " + role;
+    console.log("Message to sign:" + message);
     web3.personal.sign(message, web3.eth.coinbase, function (test, signature) {
         verifyMessage(message, role, discordName, signature, web3.eth.coinbase)
     });
