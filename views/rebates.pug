@@ -13,14 +13,14 @@ html
             thead
                 tr
                     th Type
-                each s in synths
-                    th= s
+                    each s in synths
+                        th= s
             tbody
                 tr
                     td="Reclaims"
-                each s in synths
-                    td= resultOwedMap[s].reclaimAmount
+                    each s in synths
+                        td= resultOwedMap[s].reclaimAmount
                 tr
                     td="Rebates"
-                each s in synths
-                    td= resultOwedMap[s].rebateAmount
+                    each s in synths
+                        td= resultOwedMap[s].rebateAmount
