@@ -17,6 +17,12 @@ router.get("/about", (req, res) => {
     res.render("about", {title: "Hey", message: "Hello there!"});
 });
 
+router.get("/rebates/:addressParam", async (req, res) => {
+    var resultOwedMap = new Object();
+    await getOwing(req.params.addressParam, resultOwedMap);
+    res.render("rebates", {title: "Synths", synths: synths, resultOwedMap: resultOwedMap});
+});
+
 router.get("/verify", (req, res) => {
     res.render("verify", {title: "Hey", message: "Hello there!"});
 });
@@ -208,3 +214,20 @@ function getNumberLabel(labelValue) {
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+const synths = snxjs.contractSettings.synths.map(({name}) => name);
+
+async function getOwing(address, resultOwedMap) {
+    for (let synth in synths) {
+        console.log("getting synth: " + synths[synth]);
+        await snxjs.Exchanger.settlementOwing(address, toUtf8Bytes(synths[synth])).then(r => {
+            console.log(r);
+            var reclaimAmount = r[0].toString() * 1.0 / 1e18;
+            reclaimAmount = reclaimAmount.toFixed(3);
+            var rebateAmount = r[1].toString() * 1.0 / 1e18;
+            rebateAmount = rebateAmount.toFixed(3);
+            resultOwedMap[synths[synth]] = {reclaimAmount, rebateAmount};
+        })
+    }
+}
+
