@@ -17,6 +17,9 @@ html
                     th Total Supply in sUSD
                     th Debt share
                     th Price
+                    th Entry price
+                    th Upper limit
+                    th Lower Limit
                     th Frozen
                     th Leverage
                     th Fee
@@ -31,6 +34,9 @@ html
                         td= s.totalSupplyInUSD
                         td= s.synthPercentage
                         td= s.rateForSynth
+                        td= s.entryLimit
+                        td= s.upperLimit
+                        td= s.lowerLimit
                         td= s.rateIsFrozen
                         td= s.leverage
                         td= s.fee

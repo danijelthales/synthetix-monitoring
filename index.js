@@ -109,7 +109,6 @@ setTimeout(async () => {
 
             const synths = snxjs.contractSettings.synths.map(({name}) => name);
 
-
             let totalInUSD = 0;
             let totalInUSDAboveTwoPercent = 0;
             for (let synth in synths) {
@@ -172,6 +171,22 @@ async function getSynthInfo(synth, resultsMap) {
         synthPercentage = synthPercentage.toFixed(2) + "%";
     }
 
+
+    let inverse = await snxjs.ExchangeRates.inversePricing(toUtf8Bytes(synth));
+    let entryLimit = (inverse[0].toString() / 1e18).toFixed(2);
+    let upperLimit = (inverse[1].toString() / 1e18).toFixed(2);
+    let lowerLimit = (inverse[2].toString() / 1e18).toFixed(2);
+    if (entryLimit == "0.00") {
+        entryLimit = "N/A";
+    }
+    if (upperLimit == "0.00") {
+        upperLimit = "N/A";
+    }
+    if (lowerLimit == "0.00") {
+        lowerLimit = "N/A";
+    }
+
+
     console.log(synth + " frozen value is: ", rateIsFrozen);
     resultsMap.set(synth, {
         synth,
@@ -187,7 +202,10 @@ async function getSynthInfo(synth, resultsMap) {
         clThreshold,
         suggestedFee,
         riskFactor,
-        risky
+        risky,
+        entryLimit,
+        upperLimit,
+        lowerLimit
     });
 }
 
