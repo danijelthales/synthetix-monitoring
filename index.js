@@ -23,6 +23,10 @@ router.get("/rebates/:addressParam", async (req, res) => {
     res.render("rebates", {title: "Synths", synths: synths, resultOwedMap: resultOwedMap});
 });
 
+router.get("/rebates/", async (req, res) => {
+    res.render("rebatesBase");
+});
+
 router.get("/verify", (req, res) => {
     res.render("verify", {title: "Hey", message: "Hello there!"});
 });
@@ -33,6 +37,10 @@ router.get('/table-sort.js', function (req, res) {
 
 router.get('/finish.js', function (req, res) {
     res.sendFile(path.join(__dirname + '/finish.js'));
+});
+
+router.get('/rebatesFinish.js', function (req, res) {
+    res.sendFile(path.join(__dirname + '/rebatesFinish.js'));
 });
 
 router.get('/verify.js', function (req, res) {

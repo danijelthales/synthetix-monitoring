@@ -12,15 +12,12 @@ html
         table(class="table table-bordered" id="dataTable")
             thead
                 tr
-                    th Type
-                    each s in synths
-                        th= s
+                    th Synths
+                    th Reclaims
+                    th Rebates
             tbody
-                tr
-                    td="Reclaims"
-                    each s in synths
+                each s in synths
+                    tr
+                        td= s
                         td= resultOwedMap[s].reclaimAmount
-                tr
-                    td="Rebates"
-                    each s in synths
                         td= resultOwedMap[s].rebateAmount
