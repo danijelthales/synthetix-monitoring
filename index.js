@@ -198,6 +198,7 @@ async function getSynthInfo(synth, resultsMap) {
     console.log(synth + " frozen value is: ", rateIsFrozen);
     resultsMap.set(synth, {
         synth,
+        toUtf8Bytes(synth)
         totalAmount,
         totalSupply,
         rateForSynth,
