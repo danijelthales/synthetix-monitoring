@@ -194,11 +194,12 @@ async function getSynthInfo(synth, resultsMap) {
         lowerLimit = "N/A";
     }
 
+    let key = toUtf8Bytes(synth);
 
     console.log(synth + " frozen value is: ", rateIsFrozen);
     resultsMap.set(synth, {
         synth,
-        toUtf8Bytes(synth)
+        key,
         totalAmount,
         totalSupply,
         rateForSynth,
