@@ -14,7 +14,7 @@ html
             thead
                 tr
                     th Synth
-                    th Key
+                    th(class="synth-key") Key
                     th Total Supply
                     th Total Supply in sUSD
                     th Debt share
@@ -32,7 +32,7 @@ html
                 each s in synths
                     tr(class = s.rateIsFrozen ? "frozen" : "")
                         td= s.synth
-                        td= s.key
+                        td(class="synth-key")= s.key
                         td= s.totalSupply
                         td= s.totalSupplyInUSD
                         td= s.synthPercentage

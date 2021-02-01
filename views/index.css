@@ -50,3 +50,10 @@ button:hover{
 .address{
     padding-left: 4px;
 }
+
+td.synth-key {
+    font-size: 0.8em;
+    max-width: 15em !important;
+    overflow-x: auto;
+    display: inline-block;
+}
