@@ -79,7 +79,7 @@ const fromBlock = "";
 const blockOptions = fromBlock ? {blockTag: Number(fromBlock)} : {};
 let totalInUSD = 0;
 
-const smallDeviationSynths = ["sBTC", "sETH", "sEUR", "sAUD", "sGBP", "sJPY", "sUSD", "sCHF", "sNIKKEI", "sFTSE", "sXAG", "sXAU", "sOIL", "iOIL", "iETH", "iBTC"]
+const smallDeviationSynths = ["sBTC", "sETH", "sEUR", "sAUD", "sGBP", "sJPY", "sUSD", "sCHF", "sNIKKEI", "sFTSE", "sXAG", "sXAU", "sOIL", "iOIL", "iETH", "iBTC", "sTSLA"]
 
 setInterval(async () => {
         try {
