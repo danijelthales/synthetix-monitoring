@@ -33,7 +33,7 @@ function verifyMessage(message, role, username, signature, address) {
     sentValue.address = address;
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://ec2-13-48-70-164.eu-north-1.compute.amazonaws.com:3000/verify", true);
+    xhr.open("POST", "http://ec2-13-53-125-166.eu-north-1.compute.amazonaws.com:3000/verify", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({
         value: sentValue
